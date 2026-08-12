@@ -1,0 +1,146 @@
+/* static/css/style.css */
+@charset "UTF-8";
+
+body {
+    font-family: "Malgun Gothic", sans-serif;
+    max-width: 480px;
+    margin: 40px auto;
+    line-height: 1.6;
+}
+
+/* 회원가입 완료 / 실패, 로그인 성공 / 실패 등 안내 배너 */
+/* messages.success() 는 <li class="success">, messages.error() 는 <li class="error"> 로 나옴 */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+}
+
+.messages li {
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.messages .success {
+    background: #e6f4ea;
+    color: #1e7e34;
+    border: 1px solid #b7dfc0;
+}
+
+.messages .error {
+    background: #fdecea;
+    color: #c0392b;
+    border: 1px solid #f5c2c0;
+}
+
+/* Django Form 이 자동으로 만들어 주는 항목별 오류 목록(빨간 글씨) */
+/* {{ form.as_p }} 를 쓰면 오류가 있을 때 <ul class="errorlist"> 로 나옴 */
+form ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0;
+    color: #c0392b;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* 입력칸 아래 도움말(회색, 작은 글씨) */
+/* 오류 메시지(errorlist, 빨간 굵은 글씨)와 겉모습이 겹치지 않도록 구분함 */
+form .helptext {
+    display: block;
+    color: #888888;
+    font-size: 0.85em;
+    font-weight: normal;
+}
+
+.form-control {
+    padding: 6px 8px;
+    margin: 4px 0;
+}
+
+/* 게시판 목록처럼 폭이 넓어야 하는 화면에서 body에 이 class를 추가해서 씀 */
+body.wide {
+    max-width: 900px;
+}
+
+/* 게시글 목록 검색창 */
+.board-search {
+    margin: 16px 0;
+}
+
+.board-search input[type="text"] {
+    padding: 6px 8px;
+    width: 240px;
+}
+
+.board-search button {
+    padding: 6px 12px;
+    margin-left: 4px;
+}
+
+.board-search a {
+    margin-left: 8px;
+}
+
+/* 게시글 목록 표 */
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+.board-table th,
+.board-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.board-table th {
+    background: #f5f5f5;
+}
+
+/* 목록 하단 페이지 번호 네비게이션 */
+.pagination {
+    display: flex;
+    gap: 6px;
+    margin: 16px 0;
+    padding: 0;
+}
+
+.pagination a,
+.pagination span {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333333;
+}
+
+.pagination .current {
+    background: #333333;
+    color: #ffffff;
+    border-color: #333333;
+}
+
+/* 게시글 상세보기: 작성자/작성일 등 부가 정보 */
+.board-meta {
+    color: #888888;
+    font-size: 0.9em;
+}
+
+/* 게시글 상세보기: 본문 */
+.board-content {
+    margin: 16px 0;
+    padding: 16px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 게시글 상세보기: 수정/삭제/목록 버튼 영역 */
+.board-actions a {
+    margin-right: 12px;
+}

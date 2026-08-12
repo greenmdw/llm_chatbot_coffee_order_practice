@@ -1,0 +1,11 @@
+#Django 웹 프레임워크
+Django>=5.2,<5.3
+
+# Django와 MySQL 연결
+mysqlclient>=2.2.8,<3.0
+
+# ImageField를 이용한 이미지(사진) 업로드시 사용
+Pillow>=11.0,<13.0
+
+# .env환경변수 읽기 위해 사용
+python-dotenv>=1.0,<2.0

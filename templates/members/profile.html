@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>회원정보</h1>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if member.photo %}
+        <p><img src="{{ member.photo.url }}" alt="프로필 사진" width="120"></p>
+    {% endif %}
+
+    <table class="board-table">
+        <tr><th>아이디</th><td>{{ member.username }}</td></tr>
+        <tr><th>이름</th><td>{{ member.display_name }}</td></tr>
+        <tr><th>이메일</th><td>{{ member.email }}</td></tr>
+        <!-- get_gender_display() : choices 가 있는 필드는 Django가 자동으로 만들어 주는 메소드.
+             gender 는 'M' 이 저장되어 있어도 이 메소드를 쓰면 '남자' 처럼 사람이 읽는 이름으로 나옴 -->
+        <tr><th>성별</th><td>{{ member.get_gender_display }}</td></tr>
+        <tr><th>나이</th><td>{{ member.age|default:"-" }}</td></tr>
+        <tr><th>전화번호</th><td>{{ member.phone|default:"-" }}</td></tr>
+        <tr><th>가입일</th><td>{{ member.date_joined|date:"Y-m-d" }}</td></tr>
+    </table>
+
+    <div class="board-actions">
+        <a href="{% url 'members:profile_edit' %}">정보 수정</a>
+        <a href="{% url 'members:withdraw' %}">회원 탈퇴</a>
+        <a href="{% url 'home' %}">첫 페이지로</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ board.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="wide">
+    <h1>{{ board.title }}</h1>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p class="board-meta">
+        작성자: {{ board.author.display_name }} /
+        작성일: {{ board.created_at|date:"Y-m-d H:i" }} /
+        수정일: {{ board.updated_at|date:"Y-m-d H:i" }} /
+        조회수: {{ board.read_count }}
+    </p>
+
+    <!-- 게시글 본문. linebreaks 필터가 줄바꿈을 <p>, <br> 로 바꿔줌 -->
+    <div class="board-content">
+        {{ board.content|linebreaks }}
+    </div>
+
+    {% if board.attachment %}
+        <p>첨부파일: <a href="{{ board.attachment.url }}">다운로드</a></p>
+    {% endif %}
+
+    <div class="board-actions">
+        <!-- can_edit, can_delete 는 뷰(board_detail)에서 미리 계산해서 넘겨준 값 -->
+        <!-- 템플릿에서는 board.can_edit(user) 처럼 인자가 있는 메소드를 직접 호출할 수 없음 -->
+        {% if can_edit %}
+            <a href="{% url 'boards:update' board.pk %}">수정</a>
+        {% endif %}
+        {% if can_delete %}
+            <a href="{% url 'boards:delete' board.pk %}">삭제</a>
+        {% endif %}
+        <a href="{% url 'boards:list' %}">목록으로</a>
+    </div>
+</body>
+</html>

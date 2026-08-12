@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<!-- 표가 있는 화면이라 body.wide 로 폭을 넓게 씀 (style.css 참고) -->
+<body class="wide">
+    <h1>게시판</h1>
+
+    <!-- 등록/수정/삭제 성공·실패 안내 배너 -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- 검색창. GET 으로 보내야 주소에 ?q=검색어 가 남아서 새로고침·공유가 가능함 -->
+    <form method="get" class="board-search">
+        <input type="text" name="q" value="{{ query }}" placeholder="제목 또는 내용 검색">
+        <button type="submit">검색</button>
+        {% if query %}
+            <a href="{% url 'boards:list' %}">전체보기</a>
+        {% endif %}
+    </form>
+
+    <!-- 검색 중이면 검색 결과 건수를, 아니면 전체 건수를 보여줌 -->
+    {% if query %}
+        <p>"{{ query }}" 검색 결과 {{ page_obj.paginator.count }}건</p>
+    {% else %}
+        <p>전체 게시글 {{ page_obj.paginator.count }}건</p>
+    {% endif %}
+
+    <!-- 로그인했을 때만 글쓰기 버튼 보여지게 함 -->
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'boards:create' %}">글쓰기</a></p>
+    {% endif %}
+
+    <table class="board-table">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- page_obj 를 그대로 순회하면 이번 페이지에 해당하는 10개만 나옴 -->
+            {% for board in page_obj %}
+                <tr>
+                    <td>{{ board.pk }}</td>
+                    <td><a href="{% url 'boards:detail' board.pk %}">{{ board.title }}</a></td>
+                    <td>{{ board.author.display_name }}</td>
+                    <td>{{ board.created_at|date:"Y-m-d" }}</td>
+                    <td>{{ board.read_count }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">등록된 게시글이 없습니다.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 페이지네이션. 검색 중이었다면 다음/이전 페이지로 넘어가도 검색어(q)가 유지되게 함 -->
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">이전</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                    <span class="current">{{ num }}</span>
+                {% else %}
+                    <a href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">다음</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <a href="{% url 'home' %}">첫 페이지로</a>
+</body>
+</html>

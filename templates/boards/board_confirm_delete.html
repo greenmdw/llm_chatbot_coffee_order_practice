@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 삭제</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>게시글을 삭제하시겠습니까?</h1>
+
+    <p><strong>{{ board.title }}</strong></p>
+
+    <!-- 삭제는 GET 이 아니라 반드시 POST 로만 실행되게 함 -->
+    <!-- (링크 클릭이나 검색엔진 크롤러가 GET으로 접근해도 삭제되지 않도록) -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+        <a href="{% url 'boards:detail' board.pk %}">취소</a>
+    </form>
+</body>
+</html>

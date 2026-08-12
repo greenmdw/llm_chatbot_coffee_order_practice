@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>첫 페이지</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>회원 / 게시판 연습 프로젝트</h1>
+
+    <!-- 사이트 메뉴. 게시판 목록은 비로그인 상태에서도 볼 수 있음 -->
+    <nav>
+        <a href="{% url 'boards:list' %}">게시판</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'members:profile' %}">회원정보</a>
+        {% endif %}
+    </nav>
+
+    <!-- 로그인 성공, 회원가입 완료 같은 안내 메시지 출력 -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- user 는 context_processors 의 auth 덕분에 항상 쓸 수 있음 -->
+    {% if user.is_authenticated %}
+        <p>{{ user.display_name }}님 반갑습니다.</p>
+        <a href="{% url 'members:logout' %}">로그아웃</a>
+    {% else %}
+        <a href="{% url 'members:signup' %}">회원가입</a> &nbsp;
+        <a href="{% url 'members:login' %}">로그인</a>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <h2>{{ user.display_name }}님</h2> 로그인되었습니다.
+        <a href="{% url 'members:logout' %}" >로그아웃</a>
+    {% endif %}
+</body>
+</html>

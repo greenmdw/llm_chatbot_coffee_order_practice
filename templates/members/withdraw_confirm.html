@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 탈퇴</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>정말 탈퇴하시겠습니까?</h1>
+    <p>탈퇴하면 계정과 작성하신 게시글이 모두 삭제되며, 되돌릴 수 없습니다.</p>
+
+    <!-- 삭제는 GET 이 아니라 반드시 POST 로만 실행되게 함 -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">탈퇴하기</button>
+        <a href="{% url 'members:profile' %}">취소</a>
+    </form>
+</body>
+</html>
